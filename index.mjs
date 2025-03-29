@@ -46,10 +46,12 @@ function process_inlines (tokens) {
 
     // remove newline if both characters are fullwidth (F), wide (W) or
     // halfwidth (H), but not Hangul
-    if (/^[fwh]$/.test(eastAsianWidthType(last.codePointAt(0))[0]) &&
-        /^[fwh]$/.test(eastAsianWidthType(next.codePointAt(0))[0])) {
-      if (!is_hangul(last) && !is_hangul(next)) remove_break = true
-    }
+    try {
+        if (/^[fwh]$/.test(eastAsianWidthType(last.codePointAt(0))[0]) &&
+          /^[fwh]$/.test(eastAsianWidthType(next.codePointAt(0))[0])) {
+        if (!is_hangul(last) && !is_hangul(next)) remove_break = true
+      }
+    } catch (e) {}
 
     if (remove_break) {
       tokens[i].type    = 'text'
